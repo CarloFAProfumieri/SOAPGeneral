@@ -9,16 +9,6 @@ public class MedicoLabCentralDTO
     public int medicoId { get; set; }
     public string matricula { get; set; }
     public string nombre { get; set; }
-
-    public MedicoLabCentralDTO(string claveEstd, int idLaboratorio, string apiKey, int medicoId, string matricula, string nombre)
-    {
-        this.claveEstd = claveEstd;
-        this.idLaboratorio = idLaboratorio;
-        this.apiKey = apiKey;
-        this.medicoId = medicoId;
-        this.matricula = matricula;
-        this.nombre = nombre;
-    }
             
     public XDocument GetEnvelope()
     {
