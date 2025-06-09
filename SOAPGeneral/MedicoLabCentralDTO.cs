@@ -1,6 +1,15 @@
 ﻿using System.Xml.Linq;
 namespace SOAPGeneral;
-
+/*
+var medicoEnvelope = new MedicoLabCentralDto {
+            claveEstd = "abc123",
+            idLaboratorio = 5,
+            apiKey = "secret",
+            medicoId = 42,
+            matricula = "M1234",
+            nombre = "Dr. Juan Pérez"
+        };
+ */
 public class MedicoLabCentralDto
 {
     public string claveEstd { get; set; }
