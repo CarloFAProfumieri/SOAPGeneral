@@ -25,6 +25,7 @@ public class MedicoLabCentralWs
         httpRequestContent.Headers.Add("SOAPAction", soapAction);
         return httpRequestContent;
     }
+    
     public XDocument Envelope()
     {
         var soapEnvelope = new XDocument(

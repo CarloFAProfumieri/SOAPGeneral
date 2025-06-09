@@ -26,6 +26,7 @@ public class SumarWs
        httpRequestContent.Headers.Add(SOAP_HEADER_NAME, SOAP_ACTION);
        return httpRequestContent;
     }
+    
     private XDocument Envelope()
     {
        var soapEnvelope = new XDocument(
@@ -43,6 +44,7 @@ public class SumarWs
        );
        return soapEnvelope;
     }
+    
     public int LeerRespuesta(string resultado)
     {
        //aca habria que agregar toda la logica de checkeo de errores
