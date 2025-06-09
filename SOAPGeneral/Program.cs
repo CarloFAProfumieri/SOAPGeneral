@@ -10,9 +10,9 @@ namespace useSOAP;
 
 class Program
 {
-    static async Task Main(string[] args)
+    static async Task Mained(string[] args)
     {
-        var medicoEnvelope = new MedicoLabCentralDTO {
+        var medicoEnvelope = new MedicoLabCentralDto {
             claveEstd = "abc123",
             idLaboratorio = 5,
             apiKey = "secret",
@@ -24,9 +24,33 @@ class Program
         Console.WriteLine(envelope.ToString());
         var respuesta = await CallSoap(envelope);
             
-        Console.WriteLine("responte: " + respuesta);
+        Console.WriteLine("Response: " + respuesta);
     }
     static async Task<int> CallSoap(XDocument envelope)
+    {
+        //Declaration tiene el tag <?xml version="1.0"> que va al principio del "sobre"
+        string soapRequestString = envelope.Declaration + envelope.ToString();
+        
+        var httpClient = new HttpClient();
+        var content = new StringContent(soapRequestString, Encoding.UTF8, "text/xml");
+        
+        content.Headers.Add("SOAPAction", "\"http://tempuri.org/Add\"");
+
+        var response = await httpClient.PostAsync("http://www.dneonline.com/calculator.asmx", content);
+        var result = await response.Content.ReadAsStringAsync();
+        var documentoX = XDocument.Parse(result);
+        var soapNs = XNamespace.Get("http://schemas.xmlsoap.org/soap/envelope/");
+        var tempuriNs = XNamespace.Get("http://tempuri.org/");
+        var addResult = documentoX
+            .Element(soapNs + "Envelope")?
+            .Element(soapNs + "Body")?
+            .Element(tempuriNs + "AddResponse")?
+            .Element(tempuriNs + "AddResult")?
+            .Value;
+        return int.Parse(addResult);
+    }
+    
+    static async Task<int> CallSum(XDocument envelope)
     {
             
         string soapRequestString = envelope.Declaration + envelope.ToString();
@@ -46,14 +70,8 @@ class Program
             .Element(tempuriNs + "AddResponse")?
             .Element(tempuriNs + "AddResult")?
             .Value;
-
-        //Console.WriteLine("THE X DOC:::");
-        //Console.WriteLine(documentoX.XPathSelectElement("AddResult"));
-        //Console.WriteLine(addResult);
-        //Console.WriteLine(result);
         return int.Parse(addResult);
     }
-        
 }
 
 public class MedicoSoapClient

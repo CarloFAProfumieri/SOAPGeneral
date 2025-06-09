@@ -1,7 +1,7 @@
 ﻿using System.Xml.Linq;
 namespace SOAPGeneral;
 
-public class MedicoLabCentralDTO
+public class MedicoLabCentralDto
 {
     public string claveEstd { get; set; }
     public int idLaboratorio { get; set; }
@@ -9,11 +9,10 @@ public class MedicoLabCentralDTO
     public int medicoId { get; set; }
     public string matricula { get; set; }
     public string nombre { get; set; }
-            
+    private XNamespace envNamespace = "http://schemas.xmlsoap.org/soap/envelope/";
+    private XNamespace wsl = "https://www.santafe.gob.ar/labcentral/ws/WSLabCentralApi/";
     public XDocument GetEnvelope()
     {
-        XNamespace envNamespace = "http://schemas.xmlsoap.org/soap/envelope/";
-        XNamespace wsl = "https://www.santafe.gob.ar/labcentral/ws/WSLabCentralApi/";
         var soapEnvelope = new XDocument(
             new XElement(envNamespace + "Envelope",
                 new XAttribute(XNamespace.Xmlns + "soapenv", envNamespace),
