@@ -6,7 +6,7 @@ using System.Xml.Linq;
 using System.Xml.XPath;
 using SOAPGeneral;
 
-namespace useSOAP;
+namespace SOAPGeneral;
 class Program
 {
     static async Task Main()
@@ -17,8 +17,8 @@ class Program
             B = 3
         };
         var envelope = sumarWs.GetContent();
-        var resultado = await HttpClientCaller.CallSum(envelope, SumarWs.RequestUrl);
-        int resultadoSuma = sumarWs.Parsear(resultado);
+        var resultado = await HttpClientCaller.CallSum(envelope, SumarWs.REQUEST_URL);
+        int resultadoSuma = sumarWs.LeerRespuesta(resultado);
         Console.WriteLine("respuesta: " + resultadoSuma);
     }
 }
