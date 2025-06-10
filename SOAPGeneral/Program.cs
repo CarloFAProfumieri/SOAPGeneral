@@ -17,7 +17,7 @@ class Program
             B = 3
         };
         var envelope = sumarWs.GetContent();
-        var resultado = await HttpClientCaller.CallSum(envelope, SumarWs.REQUEST_URL);
+        var resultado = await HttpClientCaller.CallSoap(envelope, SumarWs.REQUEST_URL);
         int resultadoSuma = sumarWs.LeerRespuesta(resultado);
         Console.WriteLine("respuesta: " + resultadoSuma);
     }

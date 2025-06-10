@@ -14,20 +14,21 @@ public class SumarWs
     private const string MEDIA_TYPE = "text/xml";
     private const string SOAP_ACTION = "\"http://tempuri.org/Add\"";
     private const string SOAP_HEADER_NAME = "SOAPAction";
+    private readonly Encoding m_encoding = Encoding.UTF8;
+    
     private readonly XNamespace m_soap = "http://schemas.xmlsoap.org/soap/envelope/";
     private readonly XNamespace m_tem = "http://tempuri.org/";
-    private readonly Encoding m_encoding = Encoding.UTF8;
 
     public StringContent GetContent()
     {
-       var envelope = Envelope();
+       var envelope = GetEnvelope();
        string soapRequestString = envelope.Declaration + envelope.ToString();
        var httpRequestContent = new StringContent(soapRequestString, m_encoding, MEDIA_TYPE);
        httpRequestContent.Headers.Add(SOAP_HEADER_NAME, SOAP_ACTION);
        return httpRequestContent;
     }
     
-    private XDocument Envelope()
+    private XDocument GetEnvelope()
     {
        var soapEnvelope = new XDocument(
           new XElement(m_soap + "Envelope",
