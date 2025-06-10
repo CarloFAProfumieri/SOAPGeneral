@@ -11,14 +11,13 @@ class Program
 {
     static async Task Main()
     {
-        var sumarWs = new SumarWs
+        var envelope = new SumarEnvelope
         {
-            A = 65,
-            B = 3
+            a = 65,
+            b = 3
         };
-        var envelope = sumarWs.GetContent();
-        var resultado = await HttpClientCaller.CallSoap(envelope, SumarWs.REQUEST_URL);
-        int resultadoSuma = sumarWs.LeerRespuesta(resultado);
+        var resultado = await HttpClientCaller.CallSoap(envelope);
+        int resultadoSuma = int.Parse(envelope.ReadResponse(resultado).ToString());
         Console.WriteLine("respuesta: " + resultadoSuma);
     }
 }

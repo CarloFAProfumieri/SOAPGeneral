@@ -5,10 +5,10 @@ using static SOAPGeneral.HttpClientCaller;
 namespace SOAPGeneral;
 
 
-public class SumarWs
+public class SumarEnvelope : IEnvelope
 {
-    public int A { get; set; }
-    public int B { get; set; }
+    public int a { get; set; }
+    public int b { get; set; }
 
     public const string REQUEST_URL = "http://www.dneonline.com/calculator.asmx";
     private const string MEDIA_TYPE = "text/xml";
@@ -18,17 +18,8 @@ public class SumarWs
     
     private readonly XNamespace m_soap = "http://schemas.xmlsoap.org/soap/envelope/";
     private readonly XNamespace m_tem = "http://tempuri.org/";
-
-    public StringContent GetContent()
-    {
-       var envelope = GetEnvelope();
-       string soapRequestString = envelope.Declaration + envelope.ToString();
-       var httpRequestContent = new StringContent(soapRequestString, m_encoding, MEDIA_TYPE);
-       httpRequestContent.Headers.Add(SOAP_HEADER_NAME, SOAP_ACTION);
-       return httpRequestContent;
-    }
     
-    private XDocument GetEnvelope()
+    public string GetEnvelope()
     {
        var soapEnvelope = new XDocument(
           new XElement(m_soap + "Envelope",
@@ -37,27 +28,26 @@ public class SumarWs
              new XElement(m_soap + "Header"),
              new XElement(m_soap + "Body",
                 new XElement(m_tem + "Add",
-                   new XElement(m_tem + "intA", A),
-                   new XElement(m_tem + "intB", B)
+                   new XElement(m_tem + "intA", a),
+                   new XElement(m_tem + "intB", b)
                 )
              )
           )
        );
-       return soapEnvelope;
+       return soapEnvelope.Declaration + soapEnvelope.ToString();
     }
-    
-    public int LeerRespuesta(string resultado)
+
+    public object ReadResponse(XDocument resultadoXml)
     {
        //aca habria que agregar toda la logica de checkeo de errores
-       var documentoX = XDocument.Parse(resultado);
        var soapNs = XNamespace.Get("http://schemas.xmlsoap.org/soap/envelope/");
        var tempuriNs = XNamespace.Get("http://tempuri.org/");
-       var addResult = documentoX
+       var addResult = resultadoXml
           .Element(soapNs + "Envelope")?
           .Element(soapNs + "Body")?
           .Element(tempuriNs + "AddResponse")?
           .Element(tempuriNs + "AddResult")?
           .Value;
-       return int.Parse(addResult);
+       return addResult;
     }
 }
