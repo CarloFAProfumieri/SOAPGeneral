@@ -8,7 +8,7 @@ public static class HttpClientCaller
 
     private static HttpClient client = new HttpClient(){ BaseAddress = new Uri(REQUEST_URL) };
 
-    public static async Task<XDocument> CallSoap(IEnvelope envelope, string requestUrl)
+    public static async Task<XDocument> CallSoap(IEnvelope envelope)
     {
         var httpRequestContent = new StringContent(envelope.GetEnvelope(), Encoding.UTF8, "text/xml");
         httpRequestContent.Headers.Add("SOAPAction", "\"http://tempuri.org/Add\"");
